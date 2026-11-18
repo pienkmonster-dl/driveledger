@@ -1,0 +1,9 @@
+{
+  "name": "DriveLedger",
+  "short_name": "DriveLedger",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f1f5f7",
+  "theme_color": "#10243a",
+  "description": "Personal finance and vehicle tracker"
+}

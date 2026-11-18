@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#10243a">
+<meta name="description" content="DriveLedger personal finance and vehicle tracker">
+<link rel="manifest" href="manifest.webmanifest">
+<title>DriveLedger</title>
+<style>
+:root{--navy:#10243a;--teal:#168a78;--bg:#f1f5f7;--muted:#667887;--line:#e2e9ed;--white:#fff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--navy);font:15px system-ui,-apple-system,Segoe UI,sans-serif;padding-bottom:82px}
+header{background:var(--navy);color:white;padding:22px 18px 18px;position:sticky;top:0;z-index:2}
+.brand{font-size:13px;letter-spacing:2px;font-weight:800}.tag{color:#b9cad8;font-size:12px;margin-top:3px}
+main{max-width:650px;margin:auto;padding:16px}
+h1{font-size:22px;margin:4px 0 14px}h2{font-size:17px;margin:18px 0 10px}
+.card{background:white;border-radius:17px;padding:16px;margin:10px 0;box-shadow:0 2px 10px #10243a0a}
+.balance{background:var(--navy);color:white;padding:20px;border-radius:20px;margin-bottom:12px}
+.eyebrow{font-size:11px;letter-spacing:1px;color:#b9cad8;font-weight:700}
+.big{font-size:30px;font-weight:800;margin:5px 0}.small{font-size:12px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{background:white;border-radius:15px;padding:14px;min-width:0}.metric .v{font-size:17px;font-weight:800;margin-top:5px;overflow-wrap:anywhere}
+label{display:block;font-size:12px;font-weight:700;margin:11px 0 5px}
+input,select{width:100%;padding:12px;border:1px solid #d5dfe5;border-radius:11px;font:inherit;background:white;color:var(--navy)}
+button{border:0;border-radius:12px;padding:12px 15px;font:700 14px system-ui;cursor:pointer}
+.primary{background:var(--teal);color:white;width:100%;margin-top:12px}.secondary{background:#eaf1f4;color:var(--navy)}
+.tabs{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px 3px calc(8px + env(safe-area-inset-bottom));z-index:3}
+.tabs button{background:transparent;color:#627482;padding:8px 7px;font-size:12px;flex:1}.tabs button.active{color:var(--teal);font-weight:800}
+.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.row strong{font-size:14px}.amount{font-weight:800;white-space:nowrap}.positive{color:var(--teal)}.negative{color:#a94d42}
+.entry{padding:12px 0;border-bottom:1px solid var(--line)}.entry:last-child{border:0}
+.notice{background:#fff6df;border:1px solid #f0dfb5;color:#71531a;padding:12px;border-radius:12px;font-size:12px;line-height:1.45}
+.hidden{display:none!important}.muted{color:var(--muted)}.pill{font-size:11px;background:#e7f4f0;color:#14715f;border-radius:20px;padding:5px 8px;font-weight:700}
+.cardmock{background:linear-gradient(135deg,#142d45,#176e70);color:white;border-radius:18px;padding:18px;margin:12px 0}
+.cardnum{font-size:21px;letter-spacing:2px;margin:22px 0}
+footer{text-align:center;color:#83919b;font-size:10px;padding:22px}
+</style>
+</head>
+<body>
+<header><div class="brand">DRIVELEDGER</div><div class="tag">Your money. Your vehicle. Your life.</div></header>
+<main>
+<section id="home">
+<h1>Financial overview</h1>
+<div class="balance"><div class="eyebrow">BALANCE FROM YOUR RECORDED ENTRIES</div><div class="big" id="balance">R 0.00</div><div class="small" style="color:#b9cad8">Not a live bank balance</div></div>
+<div class="grid">
+<div class="metric"><div class="small">Income</div><div class="v positive" id="incomeTotal">R 0.00</div></div>
+<div class="metric"><div class="small">Expenses</div><div class="v negative" id="expenseTotal">R 0.00</div></div>
+<div class="metric"><div class="small">Fuel spending</div><div class="v" id="fuelTotal">R 0.00</div></div>
+<div class="metric"><div class="small">Fuel used</div><div class="v" id="litreTotal">0.0 L</div></div>
+</div>
+<h2>Recent activity</h2><div class="card" id="recent"><div class="small">No entries yet. Add your first income, expense or fuel fill-up.</div></div>
+</section>
+<section id="money" class="hidden">
+<h1>Income & expenses</h1>
+<div class="card">
+<label>Record type</label><select id="moneyType"><option>Expense</option><option>Income</option></select>
+<label>Description</label><input id="moneyNote" placeholder="Salary, groceries, rent...">
+<label>Amount (R)</label><input id="moneyAmount" type="number" min="0" step=".01" placeholder="0.00">
+<button class="primary" onclick="addMoney()">Save transaction</button>
+</div><h2>All transactions</h2><div class="card" id="transactions"></div>
+</section>
+<section id="fuel" class="hidden">
+<h1>Vehicle & fuel</h1>
+<div class="card">
+<label>Litres filled</label><input id="litres" type="number" min="0" step=".01" placeholder="e.g. 45">
+<label>Price per litre (R)</label><input id="price" type="number" min="0" step=".01" value="22">
+<label>Distance since previous fill (km)</label><input id="distance" type="number" min="0" step=".1" placeholder="e.g. 550">
+<div class="row" style="margin-top:14px"><span class="small">Calculated fill-up cost</span><strong id="fuelCostPreview">R 0.00</strong></div>
+<button class="primary" onclick="addFuel()">Save fuel record</button>
+</div>
+<div class="grid">
+<div class="metric"><div class="small">Total litres</div><div class="v" id="fuelLitres">0.0 L</div></div>
+<div class="metric"><div class="small">Distance logged</div><div class="v" id="fuelKm">0 km</div></div>
+</div><div class="card"><div class="small">Average consumption</div><div class="v" id="consumption">Not available yet</div><div class="small">Calculated as litres per 100 km using the fill-ups and distances you record.</div></div>
+</section>
+<section id="wallet" class="hidden">
+<h1>Bank accounts & wallet</h1>
+<div class="notice">FNB and Capitec are not connected in this prototype. Balances entered here are manual estimates only. Never enter your banking PIN, password or full card details.</div>
+<div class="card"><h2 style="margin-top:0">Bank balances (manual)</h2>
+<label>FNB balance (R)</label><input id="fnb" type="number" step=".01" placeholder="0.00">
+<label>Capitec balance (R)</label><input id="capitec" type="number" step=".01" placeholder="0.00">
+<button class="primary" onclick="saveBanks()">Save manual balances</button>
+<div class="row" style="margin-top:14px"><strong>Combined manual balance</strong><strong id="bankTotal">R 0.00</strong></div></div>
+<div class="card"><h2 style="margin-top:0">Personal digital wallet</h2><div class="eyebrow" style="color:#667887">SEPARATE WALLET BALANCE</div><div class="big" id="walletBalance" style="color:var(--navy)">R 0.00</div>
+<label>Manual wallet adjustment (R)</label><input id="walletAdjust" type="number" step=".01" placeholder="Use positive to add, negative to subtract">
+<button class="primary" onclick="adjustWallet()">Record adjustment</button></div>
+<div class="card"><h2 style="margin-top:0">Personal virtual cards</h2><div class="cardmock"><div class="row"><strong>DriveLedger</strong><span>◉</span></div><div class="cardnum">•••• •••• •••• 0000</div><div class="row"><span style="font-size:11px">YOUR NAME</span><span style="font-size:11px">VIRTUAL</span></div></div>
+<div class="notice">Illustrative card only. It is not an active payment card. Issuing usable virtual cards and holding wallet funds requires an approved financial provider.</div></div>
+</section>
+<footer>DRIVELEDGER · Starter prototype · Data stored on this device's browser</footer>
+</main>
+<nav class="tabs">
+<button class="active" data-tab="home" onclick="showTab('home',this)">⌂<br>Home</button>
+<button data-tab="money" onclick="showTab('money',this)">R<br>Money</button>
+<button data-tab="fuel" onclick="showTab('fuel',this)">⛽<br>Fuel</button>
+<button data-tab="wallet" onclick="showTab('wallet',this)">▣<br>Wallet</button>
+</nav>
+<script>
+const KEY='driveledger_entries_v1', BANK='driveledger_banks_v1', WALLET='driveledger_wallet_v1';
+let entries=JSON.parse(localStorage.getItem(KEY)||'[]');
+const fmt=n=>'R '+Number(n||0).toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2});
+const num=id=>Number(document.getElementById(id).value)||0;
+function persist(){localStorage.setItem(KEY,JSON.stringify(entries));render()}
+function showTab(id,btn){document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
+function addMoney(){let amount=num('moneyAmount'),note=document.getElementById('moneyNote').value.trim(),type=document.getElementById('moneyType').value;if(amount<=0){alert('Enter an amount greater than zero.');return}entries.unshift({type,note:note||type,amount,date:new Date().toISOString()});document.getElementById('moneyAmount').value='';document.getElementById('moneyNote').value='';persist()}
+function addFuel(){let l=num('litres'),p=num('price'),d=num('distance');if(l<=0||p<=0){alert('Enter litres and a price per litre.');return}entries.unshift({type:'Fuel',note:'Fuel fill-up · '+l+' L',amount:l*p,litres:l,km:d,date:new Date().toISOString()});document.getElementById('litres').value='';document.getElementById('distance').value='';persist()}
+function saveBanks(){localStorage.setItem(BANK,JSON.stringify({fnb:num('fnb'),capitec:num('capitec')}));render()}
+function adjustWallet(){let n=num('walletAdjust'),old=Number(localStorage.getItem(WALLET)||0);if(!n){alert('Enter an adjustment amount.');return}let next=old+n;if(next<0){alert('Wallet balance cannot go below zero.');return}localStorage.setItem(WALLET,String(next));document.getElementById('walletAdjust').value='';render()}
+function row(e){let sign=e.type==='Income'?'+':'−',cls=e.type==='Income'?'positive':'negative';return `<div class="entry row"><div><strong>${escapeHtml(e.note)}</strong><div class="small">${e.type} · ${new Date(e.date).toLocaleDateString()}</div></div><div class="amount ${cls}">${sign}${fmt(e.amount)}</div></div>`}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function render(){let inc=entries.filter(e=>e.type==='Income').reduce((a,e)=>a+e.amount,0),exp=entries.filter(e=>e.type!=='Income').reduce((a,e)=>a+e.amount,0),fuel=entries.filter(e=>e.type==='Fuel'),lit=fuel.reduce((a,e)=>a+(e.litres||0),0),km=fuel.reduce((a,e)=>a+(e.km||0),0),fc=fuel.reduce((a,e)=>a+e.amount,0);
+document.getElementById('balance').textContent=fmt(inc-exp);document.getElementById('incomeTotal').textContent=fmt(inc);document.getElementById('expenseTotal').textContent=fmt(exp);document.getElementById('fuelTotal').textContent=fmt(fc);document.getElementById('litreTotal').textContent=lit.toFixed(1)+' L';document.getElementById('fuelLitres').textContent=lit.toFixed(1)+' L';document.getElementById('fuelKm').textContent=km.toFixed(0)+' km';document.getElementById('consumption').textContent=km>0?(lit/km*100).toFixed(1)+' L/100 km':'Not available yet';
+let html=entries.length?entries.slice(0,8).map(row).join(''):'<div class="small">No entries yet. Add your first income, expense or fuel fill-up.</div>';document.getElementById('recent').innerHTML=html;document.getElementById('transactions').innerHTML=entries.length?entries.map(row).join(''):'<div class="small">No transactions yet.</div>';
+let b=JSON.parse(localStorage.getItem(BANK)||'{}');document.getElementById('fnb').value=b.fnb??'';document.getElementById('capitec').value=b.capitec??'';document.getElementById('bankTotal').textContent=fmt((b.fnb||0)+(b.capitec||0));document.getElementById('walletBalance').textContent=fmt(localStorage.getItem(WALLET)||0);
+}
+document.getElementById('litres').addEventListener('input',preview);document.getElementById('price').addEventListener('input',preview);function preview(){document.getElementById('fuelCostPreview').textContent=fmt(num('litres')*num('price'))}
+if('serviceWorker'in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+render();
+</script>
+</body></html>
