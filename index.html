@@ -1,118 +1,110 @@
 <!doctype html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#10243a">
-<meta name="description" content="DriveLedger personal finance and vehicle tracker">
-<link rel="manifest" href="manifest.webmanifest">
-<title>DriveLedger</title>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#10243a"><link rel="manifest" href="manifest.webmanifest"><title>DriveLedger</title>
 <style>
-:root{--navy:#10243a;--teal:#168a78;--bg:#f1f5f7;--muted:#667887;--line:#e2e9ed;--white:#fff}
-*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--navy);font:15px system-ui,-apple-system,Segoe UI,sans-serif;padding-bottom:82px}
-header{background:var(--navy);color:white;padding:22px 18px 18px;position:sticky;top:0;z-index:2}
-.brand{font-size:13px;letter-spacing:2px;font-weight:800}.tag{color:#b9cad8;font-size:12px;margin-top:3px}
-main{max-width:650px;margin:auto;padding:16px}
-h1{font-size:22px;margin:4px 0 14px}h2{font-size:17px;margin:18px 0 10px}
-.card{background:white;border-radius:17px;padding:16px;margin:10px 0;box-shadow:0 2px 10px #10243a0a}
-.balance{background:var(--navy);color:white;padding:20px;border-radius:20px;margin-bottom:12px}
-.eyebrow{font-size:11px;letter-spacing:1px;color:#b9cad8;font-weight:700}
-.big{font-size:30px;font-weight:800;margin:5px 0}.small{font-size:12px;color:var(--muted)}
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{background:white;border-radius:15px;padding:14px;min-width:0}.metric .v{font-size:17px;font-weight:800;margin-top:5px;overflow-wrap:anywhere}
-label{display:block;font-size:12px;font-weight:700;margin:11px 0 5px}
-input,select{width:100%;padding:12px;border:1px solid #d5dfe5;border-radius:11px;font:inherit;background:white;color:var(--navy)}
-button{border:0;border-radius:12px;padding:12px 15px;font:700 14px system-ui;cursor:pointer}
-.primary{background:var(--teal);color:white;width:100%;margin-top:12px}.secondary{background:#eaf1f4;color:var(--navy)}
-.tabs{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px 3px calc(8px + env(safe-area-inset-bottom));z-index:3}
-.tabs button{background:transparent;color:#627482;padding:8px 7px;font-size:12px;flex:1}.tabs button.active{color:var(--teal);font-weight:800}
-.row{display:flex;align-items:center;justify-content:space-between;gap:10px}.row strong{font-size:14px}.amount{font-weight:800;white-space:nowrap}.positive{color:var(--teal)}.negative{color:#a94d42}
-.entry{padding:12px 0;border-bottom:1px solid var(--line)}.entry:last-child{border:0}
-.notice{background:#fff6df;border:1px solid #f0dfb5;color:#71531a;padding:12px;border-radius:12px;font-size:12px;line-height:1.45}
-.hidden{display:none!important}.muted{color:var(--muted)}.pill{font-size:11px;background:#e7f4f0;color:#14715f;border-radius:20px;padding:5px 8px;font-weight:700}
-.cardmock{background:linear-gradient(135deg,#142d45,#176e70);color:white;border-radius:18px;padding:18px;margin:12px 0}
-.cardnum{font-size:21px;letter-spacing:2px;margin:22px 0}
-footer{text-align:center;color:#83919b;font-size:10px;padding:22px}
-</style>
-</head>
-<body>
-<header><div class="brand">DRIVELEDGER</div><div class="tag">Your money. Your vehicle. Your life.</div></header>
+:root{--navy:#10243a;--blue:#1769aa;--bg:#f3f6fa;--card:#fff;--muted:#65758b;--line:#e2e8f0;--green:#16845b;--red:#c34444}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font:15px system-ui,-apple-system,Segoe UI,sans-serif;color:#17283c}header{background:var(--navy);color:white;padding:20px 17px 15px}header h1{margin:0;font-size:23px}header p{margin:4px 0 0;color:#c7d4e2;font-size:13px}.tabs{display:flex;overflow:auto;background:white;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:2}.tabs button{flex:1;min-width:max-content;background:none;border:0;padding:13px 12px;color:var(--muted);font-weight:650}.tabs button.active{color:var(--blue);border-bottom:3px solid var(--blue)}main{padding:15px;max-width:850px;margin:auto}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;margin-bottom:11px;box-shadow:0 2px 8px #122b4508}.metric small{color:var(--muted)}.metric strong{display:block;font-size:22px;margin-top:5px}.section{font-size:17px;margin:18px 2px 10px}.muted{color:var(--muted);font-size:13px}.row{display:flex;justify-content:space-between;gap:10px;align-items:center}.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:9px}label{font-size:12px;color:var(--muted);display:block;margin-bottom:4px}input,select{width:100%;padding:11px;border:1px solid #ccd6e2;border-radius:9px;background:white;font:inherit;color:#17283c}button.primary{background:var(--blue);color:white;border:0;border-radius:9px;padding:12px 15px;font-weight:700;width:100%;margin-top:10px}button.secondary{background:#eaf2f9;color:var(--blue);border:0;border-radius:8px;padding:8px 11px;font-weight:650}button.danger{background:#fff0f0;color:var(--red);border:0;border-radius:8px;padding:7px 9px}.item{padding:10px 0;border-bottom:1px solid var(--line)}.item:last-child{border:0}.positive{color:var(--green)}.negative{color:var(--red)}.bar{height:9px;background:#e8eef5;border-radius:10px;overflow:hidden;margin-top:7px}.bar span{display:block;height:100%;background:var(--blue)}.hidden{display:none}.notice{background:#fff8e8;border:1px solid #f0dfb5;padding:11px;border-radius:10px;font-size:13px;color:#6d541c}.pill{font-size:11px;padding:4px 7px;border-radius:20px;background:#eaf2f9;color:var(--blue)}footer{padding:20px;text-align:center;color:var(--muted);font-size:12px}
+@media(max-width:430px){.formgrid{grid-template-columns:1fr 1fr}.metric strong{font-size:19px}}
+</style></head><body>
+<header><div class="row"><div><h1>DriveLedger</h1><p>Your money. Your vehicle. One dashboard.</p></div><span class="pill">ZAR · Manual mode</span></div></header>
+<nav class="tabs"><button class="active" data-tab="home">Home</button><button data-tab="money">Money</button><button data-tab="fuel">Fuel</button><button data-tab="vehicle">Vehicle</button><button data-tab="reports">Reports</button></nav>
 <main>
 <section id="home">
-<h1>Financial overview</h1>
-<div class="balance"><div class="eyebrow">BALANCE FROM YOUR RECORDED ENTRIES</div><div class="big" id="balance">R 0.00</div><div class="small" style="color:#b9cad8">Not a live bank balance</div></div>
-<div class="grid">
-<div class="metric"><div class="small">Income</div><div class="v positive" id="incomeTotal">R 0.00</div></div>
-<div class="metric"><div class="small">Expenses</div><div class="v negative" id="expenseTotal">R 0.00</div></div>
-<div class="metric"><div class="small">Fuel spending</div><div class="v" id="fuelTotal">R 0.00</div></div>
-<div class="metric"><div class="small">Fuel used</div><div class="v" id="litreTotal">0.0 L</div></div>
-</div>
-<h2>Recent activity</h2><div class="card" id="recent"><div class="small">No entries yet. Add your first income, expense or fuel fill-up.</div></div>
+ <div class="grid">
+  <div class="card metric"><small>Monthly income</small><strong id="mIncome">R0.00</strong></div>
+  <div class="card metric"><small>Monthly expenses</small><strong id="mExpense">R0.00</strong></div>
+  <div class="card metric"><small>Bank balances</small><strong id="mBanks">R0.00</strong></div>
+  <div class="card metric"><small>Fuel this month</small><strong id="mFuel">R0.00</strong></div>
+ </div>
+ <div class="card"><div class="row"><b>Bank accounts</b><button class="secondary" onclick="showTab('money')">Update</button></div>
+ <div class="item row"><span>FNB balance</span><b id="homeFnb">R0.00</b></div><div class="item row"><span>Capitec balance</span><b id="homeCap">R0.00</b></div><div class="item row"><span>Combined balance</span><b id="homeTotal">R0.00</b></div>
+ </div>
+ <div class="card"><b>Vehicle snapshot</b><div class="item row"><span>Distance recorded</span><b id="homeKm">0 km</b></div><div class="item row"><span>Average fuel economy</span><b id="homeEconomy">—</b></div><div class="item row"><span>Cost per kilometre</span><b id="homeCostKm">—</b></div></div>
+ <div class="notice">Your information is stored in this browser on this phone. Export a backup regularly. Clearing browser data may erase your records.</div>
 </section>
 <section id="money" class="hidden">
-<h1>Income & expenses</h1>
-<div class="card">
-<label>Record type</label><select id="moneyType"><option>Expense</option><option>Income</option></select>
-<label>Description</label><input id="moneyNote" placeholder="Salary, groceries, rent...">
-<label>Amount (R)</label><input id="moneyAmount" type="number" min="0" step=".01" placeholder="0.00">
-<button class="primary" onclick="addMoney()">Save transaction</button>
-</div><h2>All transactions</h2><div class="card" id="transactions"></div>
+ <h2 class="section">Bank balances</h2><div class="card"><div class="formgrid">
+ <div><label>FNB balance (R)</label><input id="fnb" type="number" step=".01" placeholder="0.00"></div><div><label>Capitec balance (R)</label><input id="cap" type="number" step=".01" placeholder="0.00"></div></div><button class="primary" onclick="saveBanks()">Save balances</button><p class="muted">Enter the balances shown in your banking apps. DriveLedger does not connect to your banks.</p></div>
+ <h2 class="section">Add money activity</h2><div class="card"><div class="formgrid">
+ <div><label>Type</label><select id="txType"><option value="income">Income</option><option value="expense">Expense</option><option value="transfer">Transfer between own accounts</option></select></div>
+ <div><label>Amount (R)</label><input id="txAmount" type="number" min=".01" step=".01" placeholder="0.00"></div>
+ <div><label>Category</label><select id="txCategory"><option>Salary</option><option>Business income</option><option>Other income</option><option>Groceries</option><option>Rent</option><option>Bills</option><option>Transport</option><option>Vehicle</option><option>Repairs</option><option>Entertainment</option><option>Other</option></select></div>
+ <div><label>Account</label><select id="txAccount"><option>FNB</option><option>Capitec</option><option>Cash</option></select></div>
+ <div><label>Date</label><input id="txDate" type="date"></div><div><label>Note</label><input id="txNote" placeholder="Optional"></div></div><button class="primary" onclick="addTx()">Save transaction</button></div>
+ <h2 class="section">Recent money activity</h2><div class="card" id="txList"></div>
 </section>
 <section id="fuel" class="hidden">
-<h1>Vehicle & fuel</h1>
-<div class="card">
-<label>Litres filled</label><input id="litres" type="number" min="0" step=".01" placeholder="e.g. 45">
-<label>Price per litre (R)</label><input id="price" type="number" min="0" step=".01" value="22">
-<label>Distance since previous fill (km)</label><input id="distance" type="number" min="0" step=".1" placeholder="e.g. 550">
-<div class="row" style="margin-top:14px"><span class="small">Calculated fill-up cost</span><strong id="fuelCostPreview">R 0.00</strong></div>
-<button class="primary" onclick="addFuel()">Save fuel record</button>
-</div>
-<div class="grid">
-<div class="metric"><div class="small">Total litres</div><div class="v" id="fuelLitres">0.0 L</div></div>
-<div class="metric"><div class="small">Distance logged</div><div class="v" id="fuelKm">0 km</div></div>
-</div><div class="card"><div class="small">Average consumption</div><div class="v" id="consumption">Not available yet</div><div class="small">Calculated as litres per 100 km using the fill-ups and distances you record.</div></div>
+ <h2 class="section">Record a fuel fill-up</h2><div class="card"><div class="formgrid">
+ <div><label>Date</label><input id="fuelDate" type="date"></div><div><label>Odometer (km)</label><input id="odo" type="number" placeholder="e.g. 85420"></div>
+ <div><label>Litres</label><input id="litres" type="number" step=".01" placeholder="0.00"></div><div><label>Price per litre (R)</label><input id="price" type="number" step=".01" placeholder="0.00"></div>
+ <div><label>Fuel station</label><input id="station" placeholder="Station name"></div><div><label>Fuel type</label><select id="fuelType"><option>Petrol</option><option>Diesel</option><option>Other</option></select></div></div><button class="primary" onclick="addFuel()">Save fill-up</button><p class="muted">For accurate km/L, enter odometer readings consistently, ideally at consecutive full-tank fill-ups.</p></div>
+ <h2 class="section">Fuel efficiency history</h2><div class="card"><p class="muted">Estimated km/L between consecutive recorded fill-ups. For the most useful result, fill the tank each time and record the odometer.</p><div id="fuelTrend">Add at least two fill-ups with odometer readings to see your trend.</div></div><h2 class="section">Fuel history</h2><div class="card" id="fuelList"></div>
 </section>
-<section id="wallet" class="hidden">
-<h1>Bank accounts & wallet</h1>
-<div class="notice">FNB and Capitec are not connected in this prototype. Balances entered here are manual estimates only. Never enter your banking PIN, password or full card details.</div>
-<div class="card"><h2 style="margin-top:0">Bank balances (manual)</h2>
-<label>FNB balance (R)</label><input id="fnb" type="number" step=".01" placeholder="0.00">
-<label>Capitec balance (R)</label><input id="capitec" type="number" step=".01" placeholder="0.00">
-<button class="primary" onclick="saveBanks()">Save manual balances</button>
-<div class="row" style="margin-top:14px"><strong>Combined manual balance</strong><strong id="bankTotal">R 0.00</strong></div></div>
-<div class="card"><h2 style="margin-top:0">Personal digital wallet</h2><div class="eyebrow" style="color:#667887">SEPARATE WALLET BALANCE</div><div class="big" id="walletBalance" style="color:var(--navy)">R 0.00</div>
-<label>Manual wallet adjustment (R)</label><input id="walletAdjust" type="number" step=".01" placeholder="Use positive to add, negative to subtract">
-<button class="primary" onclick="adjustWallet()">Record adjustment</button></div>
-<div class="card"><h2 style="margin-top:0">Personal virtual cards</h2><div class="cardmock"><div class="row"><strong>DriveLedger</strong><span>◉</span></div><div class="cardnum">•••• •••• •••• 0000</div><div class="row"><span style="font-size:11px">YOUR NAME</span><span style="font-size:11px">VIRTUAL</span></div></div>
-<div class="notice">Illustrative card only. It is not an active payment card. Issuing usable virtual cards and holding wallet funds requires an approved financial provider.</div></div>
+<section id="vehicle" class="hidden">
+ <h2 class="section">Vehicle details</h2><div class="card"><div class="formgrid">
+ <div><label>Vehicle name</label><input id="vehicleName" placeholder="e.g. My car"></div><div><label>Make / model</label><input id="vehicleModel" placeholder="e.g. Toyota Corolla"></div>
+ <div><label>Registration (optional)</label><input id="registration" placeholder="Registration"></div><div><label>Current odometer (km)</label><input id="currentOdo" type="number" placeholder="0"></div></div><button class="primary" onclick="saveVehicle()">Save vehicle</button></div>
+ <h2 class="section">Maintenance records</h2><div class="card"><div class="formgrid"><div><label>Service / repair</label><input id="maintName" placeholder="Oil change, tyres..."></div><div><label>Cost (R)</label><input id="maintCost" type="number" step=".01"></div><div><label>Date</label><input id="maintDate" type="date"></div><div><label>Odometer (km)</label><input id="maintOdo" type="number"></div><div><label>Next service at (km)</label><input id="nextService" type="number"></div></div><button class="primary" onclick="addMaint()">Save maintenance</button></div><div class="card" id="maintList"></div>
 </section>
-<footer>DRIVELEDGER · Starter prototype · Data stored on this device's browser</footer>
-</main>
-<nav class="tabs">
-<button class="active" data-tab="home" onclick="showTab('home',this)">⌂<br>Home</button>
-<button data-tab="money" onclick="showTab('money',this)">R<br>Money</button>
-<button data-tab="fuel" onclick="showTab('fuel',this)">⛽<br>Fuel</button>
-<button data-tab="wallet" onclick="showTab('wallet',this)">▣<br>Wallet</button>
-</nav>
+<section id="reports" class="hidden">
+ <h2 class="section">Reports</h2><div class="grid">
+ <div class="card metric"><small>Income this month</small><strong id="rIncome">R0</strong></div><div class="card metric"><small>Expenses this month</small><strong id="rExpense">R0</strong></div>
+ <div class="card metric"><small>Fuel litres this month</small><strong id="rLitres">0 L</strong></div><div class="card metric"><small>Fuel cost this month</small><strong id="rFuelCost">R0</strong></div>
+ <div class="card metric"><small>Distance recorded</small><strong id="rDistance">0 km</strong></div><div class="card metric"><small>Maintenance total</small><strong id="rMaint">R0</strong></div></div>
+ <div class="card"><b>Monthly cash flow</b><div class="item row"><span>Income minus expenses</span><strong id="rNet">R0</strong></div><div class="bar"><span id="cashBar" style="width:0%"></span></div><p class="muted">Transfers between your own accounts are excluded from income and expenses.</p></div>
+ <div class="card"><b>Fuel efficiency trend (km/L)</b><p class="muted">Estimated from the distance between consecutive fill-ups divided by litres added at the later fill-up.</p><div id="reportFuelTrend">Add at least two fill-ups with odometer readings to see your trend.</div></div>\n <div class="card"><b>Fuel economy and running costs</b><div class="item row"><span>Average km/L (estimate)</span><strong id="rEconomy">—</strong></div><div class="item row"><span>Fuel cost per km (estimate)</span><strong id="rCostKm">—</strong></div><div class="item row"><span>Total vehicle costs logged</span><strong id="rVehicleCosts">R0</strong></div></div>
+ <div class="card"><b>Category breakdown (this month)</b><div id="categoryReport"></div></div>
+ <div class="card"><div class="row"><b>Backup and export</b><button class="secondary" onclick="exportData()">Export JSON backup</button></div><p class="muted">Download a backup of your records. Keep it somewhere safe.</p></div>
+</section>
+</main><footer>DriveLedger · Manual tracking prototype · No bank connection or real payment cards</footer>
 <script>
-const KEY='driveledger_entries_v1', BANK='driveledger_banks_v1', WALLET='driveledger_wallet_v1';
-let entries=JSON.parse(localStorage.getItem(KEY)||'[]');
-const fmt=n=>'R '+Number(n||0).toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2});
-const num=id=>Number(document.getElementById(id).value)||0;
-function persist(){localStorage.setItem(KEY,JSON.stringify(entries));render()}
-function showTab(id,btn){document.querySelectorAll('main section').forEach(s=>s.classList.add('hidden'));document.getElementById(id).classList.remove('hidden');document.querySelectorAll('.tabs button').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
-function addMoney(){let amount=num('moneyAmount'),note=document.getElementById('moneyNote').value.trim(),type=document.getElementById('moneyType').value;if(amount<=0){alert('Enter an amount greater than zero.');return}entries.unshift({type,note:note||type,amount,date:new Date().toISOString()});document.getElementById('moneyAmount').value='';document.getElementById('moneyNote').value='';persist()}
-function addFuel(){let l=num('litres'),p=num('price'),d=num('distance');if(l<=0||p<=0){alert('Enter litres and a price per litre.');return}entries.unshift({type:'Fuel',note:'Fuel fill-up · '+l+' L',amount:l*p,litres:l,km:d,date:new Date().toISOString()});document.getElementById('litres').value='';document.getElementById('distance').value='';persist()}
-function saveBanks(){localStorage.setItem(BANK,JSON.stringify({fnb:num('fnb'),capitec:num('capitec')}));render()}
-function adjustWallet(){let n=num('walletAdjust'),old=Number(localStorage.getItem(WALLET)||0);if(!n){alert('Enter an adjustment amount.');return}let next=old+n;if(next<0){alert('Wallet balance cannot go below zero.');return}localStorage.setItem(WALLET,String(next));document.getElementById('walletAdjust').value='';render()}
-function row(e){let sign=e.type==='Income'?'+':'−',cls=e.type==='Income'?'positive':'negative';return `<div class="entry row"><div><strong>${escapeHtml(e.note)}</strong><div class="small">${e.type} · ${new Date(e.date).toLocaleDateString()}</div></div><div class="amount ${cls}">${sign}${fmt(e.amount)}</div></div>`}
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
-function render(){let inc=entries.filter(e=>e.type==='Income').reduce((a,e)=>a+e.amount,0),exp=entries.filter(e=>e.type!=='Income').reduce((a,e)=>a+e.amount,0),fuel=entries.filter(e=>e.type==='Fuel'),lit=fuel.reduce((a,e)=>a+(e.litres||0),0),km=fuel.reduce((a,e)=>a+(e.km||0),0),fc=fuel.reduce((a,e)=>a+e.amount,0);
-document.getElementById('balance').textContent=fmt(inc-exp);document.getElementById('incomeTotal').textContent=fmt(inc);document.getElementById('expenseTotal').textContent=fmt(exp);document.getElementById('fuelTotal').textContent=fmt(fc);document.getElementById('litreTotal').textContent=lit.toFixed(1)+' L';document.getElementById('fuelLitres').textContent=lit.toFixed(1)+' L';document.getElementById('fuelKm').textContent=km.toFixed(0)+' km';document.getElementById('consumption').textContent=km>0?(lit/km*100).toFixed(1)+' L/100 km':'Not available yet';
-let html=entries.length?entries.slice(0,8).map(row).join(''):'<div class="small">No entries yet. Add your first income, expense or fuel fill-up.</div>';document.getElementById('recent').innerHTML=html;document.getElementById('transactions').innerHTML=entries.length?entries.map(row).join(''):'<div class="small">No transactions yet.</div>';
-let b=JSON.parse(localStorage.getItem(BANK)||'{}');document.getElementById('fnb').value=b.fnb??'';document.getElementById('capitec').value=b.capitec??'';document.getElementById('bankTotal').textContent=fmt((b.fnb||0)+(b.capitec||0));document.getElementById('walletBalance').textContent=fmt(localStorage.getItem(WALLET)||0);
+const $=id=>document.getElementById(id), money=n=>'R'+(Number(n)||0).toLocaleString('en-ZA',{minimumFractionDigits:2,maximumFractionDigits:2});
+let db=JSON.parse(localStorage.getItem('driveledger_db')||'{"banks":{"FNB":0,"Capitec":0},"tx":[],"fuel":[],"maintenance":[],"vehicle":{}}');
+function save(){localStorage.setItem('driveledger_db',JSON.stringify(db));render()}
+function today(id){$(id).value=new Date().toISOString().slice(0,10)};['txDate','fuelDate','maintDate'].forEach(today);
+function showTab(t){document.querySelectorAll('main section').forEach(s=>s.classList.toggle('hidden',s.id!==t));document.querySelectorAll('.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.tab===t));render()}
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+function month(x){return (x||'').slice(0,7)===new Date().toISOString().slice(0,7)}
+function sum(a,fn){return a.reduce((v,x)=>v+fn(x),0)}
+function saveBanks(){db.banks.FNB=+($('fnb').value||0);db.banks.Capitec=+($('cap').value||0);save()}
+function addTx(){let amount=+$('txAmount').value;if(amount<=0)return alert('Enter an amount greater than zero.');db.tx.unshift({type:$('txType').value,amount,category:$('txCategory').value,account:$('txAccount').value,date:$('txDate').value,note:$('txNote').value});$('txAmount').value='';$('txNote').value='';save()}
+function addFuel(){let litres=+$('litres').value,price=+$('price').value,odo=+$('odo').value;if(litres<=0||price<=0||odo<=0)return alert('Enter valid litres, price and odometer.');db.fuel.unshift({litres,price,odo,cost:litres*price,date:$('fuelDate').value,station:$('station').value,type:$('fuelType').value});['litres','price','odo','station'].forEach(x=>$(x).value='');save()}
+function saveVehicle(){db.vehicle={name:$('vehicleName').value,model:$('vehicleModel').value,reg:$('registration').value,odo:+$('currentOdo').value};save()}
+function addMaint(){if(!$('maintName').value)return alert('Enter a service or repair.');db.maintenance.unshift({name:$('maintName').value,cost:+$('maintCost').value||0,date:$('maintDate').value,odo:+$('maintOdo').value||0,next:+$('nextService').value||0});save();$('maintName').value=''}
+function del(kind,i){if(confirm('Delete this record?')){db[kind].splice(i,1);save()}}
+
+function fuelTrendMarkup(){
+ const rows=[...db.fuel].filter(x=>x.odo>0&&x.litres>0).sort((a,b)=>new Date(a.date)-new Date(b.date)||a.odo-b.odo);
+ const pts=[];
+ for(let i=1;i<rows.length;i++){
+   const km=rows[i].odo-rows[i-1].odo;
+   if(km>0){pts.push({date:rows[i].date, value:km/rows[i].litres});}
+ }
+ if(pts.length<1)return '<p class="muted">Add at least two fill-ups with increasing odometer readings. Full-tank fill-ups give the most useful estimate.</p>';
+ const vals=pts.map(p=>p.value), min=Math.max(0,Math.min(...vals)-1), max=Math.max(...vals)+1, span=Math.max(1,max-min);
+ const W=320,H=145,L=34,R=8,T=12,B=28;
+ const coords=pts.map((p,i)=>({x:pts.length===1?W/2:L+i*(W-L-R)/(pts.length-1),y:T+(max-p.value)/span*(H-T-B),p}));
+ const poly=coords.map(c=>c.x+','+c.y).join(' ');
+ const circles=coords.map(c=>`<circle cx="${c.x}" cy="${c.y}" r="4" fill="#1769aa"><title>${c.p.date}: ${c.p.value.toFixed(2)} km/L</title></circle>`).join('');
+ const labels=coords.map((c,i)=>i===0||i===coords.length-1?`<text x="${c.x}" y="${H-7}" font-size="9" text-anchor="middle" fill="#65758b">${c.p.date.slice(5)}</text>`:'').join('');
+ const last=pts[pts.length-1].value;
+ return `<div class="row"><span class="muted">${pts.length} interval(s) recorded</span><b>${last.toFixed(2)} km/L latest</b></div><svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Fuel efficiency history graph"><line x1="${L}" y1="${H-B}" x2="${W-R}" y2="${H-B}" stroke="#ccd6e2"/><line x1="${L}" y1="${T}" x2="${L}" y2="${H-B}" stroke="#ccd6e2"/><polyline points="${poly}" fill="none" stroke="#1769aa" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>${circles}${labels}</svg><div class="muted">Higher km/L means more distance per litre. Estimates can vary with driving conditions and fill-up method.</div>`;
 }
-document.getElementById('litres').addEventListener('input',preview);document.getElementById('price').addEventListener('input',preview);function preview(){document.getElementById('fuelCostPreview').textContent=fmt(num('litres')*num('price'))}
+function render(){
+ $('fnb').value=db.banks.FNB||0;$('cap').value=db.banks.Capitec||0;
+ $('vehicleName').value=db.vehicle.name||'';$('vehicleModel').value=db.vehicle.model||'';$('registration').value=db.vehicle.reg||'';$('currentOdo').value=db.vehicle.odo||'';
+ let inc=sum(db.tx.filter(x=>x.type==='income'&&month(x.date)),x=>x.amount),exp=sum(db.tx.filter(x=>x.type==='expense'&&month(x.date)),x=>x.amount),fuel=sum(db.fuel.filter(x=>month(x.date)),x=>x.cost),lit=sum(db.fuel.filter(x=>month(x.date)),x=>x.litres),banks=(+db.banks.FNB||0)+(+db.banks.Capitec||0);
+ $('mIncome').textContent=money(inc);$('mExpense').textContent=money(exp);$('mBanks').textContent=money(banks);$('mFuel').textContent=money(fuel);
+ $('homeFnb').textContent=money(db.banks.FNB);$('homeCap').textContent=money(db.banks.Capitec);$('homeTotal').textContent=money(banks);
+ let kms=db.fuel.length>1?Math.max(0,db.fuel[0].odo-db.fuel[db.fuel.length-1].odo):0,allLit=sum(db.fuel,x=>x.litres),allFuel=sum(db.fuel,x=>x.cost),economy=allLit>0&&kms>0?kms/allLit:0,costkm=kms>0?(allFuel+sum(db.maintenance,x=>x.cost))/kms:0;
+ $('homeKm').textContent=kms.toLocaleString()+' km';$('homeEconomy').textContent=economy?economy.toFixed(1)+' km/L':'—';$('homeCostKm').textContent=costkm?money(costkm)+'/km':'—';
+ $('txList').innerHTML=db.tx.length?db.tx.slice(0,30).map((x,i)=>`<div class="item row"><div><b>${x.category}</b><div class="muted">${x.date} · ${x.account} · ${x.type==='transfer'?'Transfer':x.note||x.type}</div></div><div><b class="${x.type==='income'?'positive':x.type==='expense'?'negative':''}">${money(x.amount)}</b> <button class="danger" onclick="del('tx',${i})">×</button></div></div>`).join(''):'<p class="muted">No transactions recorded yet.</p>';
+ $('fuelList').innerHTML=db.fuel.length?db.fuel.slice(0,30).map((x,i)=>`<div class="item row"><div><b>${x.litres} L · ${money(x.cost)}</b><div class="muted">${x.date} · ${x.odo.toLocaleString()} km · ${x.station||x.type}</div></div><button class="danger" onclick="del('fuel',${i})">×</button></div>`).join(''):'<p class="muted">No fill-ups recorded yet.</p>';
+ $('maintList').innerHTML=db.maintenance.length?db.maintenance.map((x,i)=>`<div class="item row"><div><b>${x.name}</b><div class="muted">${x.date} · ${x.odo} km · Next: ${x.next||'Not set'} km</div><b>${money(x.cost)}</b></div><button class="danger" onclick="del('maintenance',${i})">×</button></div>`).join(''):'<p class="muted">No maintenance records yet.</p>';
+ $('rIncome').textContent=money(inc);$('rExpense').textContent=money(exp);$('rLitres').textContent=lit.toFixed(1)+' L';$('rFuelCost').textContent=money(fuel);$('rDistance').textContent=kms.toLocaleString()+' km';$('rMaint').textContent=money(sum(db.maintenance,x=>x.cost));$('rNet').textContent=money(inc-exp);$('cashBar').style.width=(inc+exp?Math.max(0,Math.min(100,inc/(inc+exp)*100)):0)+'%';$('rEconomy').textContent=economy?economy.toFixed(1)+' km/L':'Need more odometer readings';$('rCostKm').textContent=costkm?money(costkm)+'/km':'Need more odometer readings';$('rVehicleCosts').textContent=money(allFuel+sum(db.maintenance,x=>x.cost));
+ $('fuelTrend').innerHTML=fuelTrendMarkup();$('reportFuelTrend').innerHTML=fuelTrendMarkup();\n let cats={};db.tx.filter(x=>x.type==='expense'&&month(x.date)).forEach(x=>cats[x.category]=(cats[x.category]||0)+x.amount);$('categoryReport').innerHTML=Object.keys(cats).length?Object.entries(cats).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="item row"><span>${k}</span><b>${money(v)}</b></div>`).join(''):'<p class="muted">No expenses this month.</p>';
+}
+function exportData(){let blob=new Blob([JSON.stringify(db,null,2)],{type:'application/json'}),a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='driveledger-backup.json';a.click();URL.revokeObjectURL(a.href)}
 if('serviceWorker'in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
 render();
-</script>
-</body></html>
+</script></body></html>
