@@ -26,7 +26,7 @@ button{border:0;border-radius:12px;padding:12px 15px;font:700 14px system-ui;cur
 .tabs{position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--line);display:flex;justify-content:space-around;padding:8px 3px calc(8px + env(safe-area-inset-bottom));z-index:3}
 .tabs button{background:transparent;color:#627482;padding:8px 7px;font-size:12px;flex:1}.tabs button.active{color:var(--teal);font-weight:800}
 .row{display:flex;align-items:center;justify-content:space-between;gap:10px}.row strong{font-size:14px}.amount{font-weight:800;white-space:nowrap}.positive{color:var(--teal)}.negative{color:#a94d42}
-.entry{padding:12px 0;border-bottom:1px solid var(--line)}.entry:last-child{border:0}
+.entry{padding:12px 0;border-bottom:1px solid var(--line)}.entry:last-child{border:0}.delete-entry{background:#fff0ee;color:#a94d42;padding:7px 10px;font-size:12px;white-space:nowrap}
 .notice{background:#fff6df;border:1px solid #f0dfb5;color:#71531a;padding:12px;border-radius:12px;font-size:12px;line-height:1.45}
 .hidden{display:none!important}.muted{color:var(--muted)}.pill{font-size:11px;background:#e7f4f0;color:#14715f;border-radius:20px;padding:5px 8px;font-weight:700}
 .cardmock{background:linear-gradient(135deg,#142d45,#176e70);color:white;border-radius:18px;padding:18px;margin:12px 0}
@@ -107,6 +107,12 @@ footer{text-align:center;color:#83919b;font-size:10px;padding:22px}
 <div class="card"><h2 style="margin-top:0">Personal virtual cards</h2><div class="cardmock"><div class="row"><strong>DriveLedger</strong><span>◉</span></div><div class="cardnum">•••• •••• •••• 0000</div><div class="row"><span style="font-size:11px">YOUR NAME</span><span style="font-size:11px">VIRTUAL</span></div></div>
 <div class="notice">Illustrative card only. It is not an active payment card. Issuing usable virtual cards and holding wallet funds requires an approved financial provider.</div></div>
 </section>
+<section id="data" class="hidden">
+<h1>Data management</h1>
+<div class="card"><h2 style="margin-top:0">Individual entries</h2><div class="small">Remove an incorrect income, expense, fuel or maintenance entry from its list using the Delete button.</div></div>
+<div class="card"><h2 style="margin-top:0">Selected vehicle history</h2><div class="small">This removes fuel and maintenance records linked to the currently selected vehicle. It does not delete the vehicle itself.</div><button class="primary" onclick="clearVehicleHistory()">Clear selected vehicle history</button></div>
+<div class="card"><h2 style="margin-top:0">Reset DriveLedger</h2><div class="notice">This permanently clears all transactions, fuel records, vehicles, maintenance history, manual bank balances and wallet balance stored by DriveLedger on this browser.</div><button class="primary" style="background:#a94d42" onclick="resetAllData()">Reset all DriveLedger data</button></div>
+</section>
 <footer>DRIVELEDGER · Starter prototype · Data stored on this device's browser</footer>
 </main>
 <nav class="tabs">
@@ -115,9 +121,16 @@ footer{text-align:center;color:#83919b;font-size:10px;padding:22px}
 <button data-tab="fuel" onclick="showTab('fuel',this)">⛽<br>Fuel</button>
 <button data-tab="reports" onclick="showTab('reports',this)">▤<br>Reports</button>
 <button data-tab="wallet" onclick="showTab('wallet',this)">▣<br>Wallet</button>
+<button data-tab="data" onclick="showTab('data',this)">⚙<br>Data</button>
 </nav>
 <script>
 const KEY='driveledger_entries_v1', BANK='driveledger_banks_v1', WALLET='driveledger_wallet_v1', VEHICLE='driveledger_vehicle_v1', FLEET='driveledger_vehicles_v2', ACTIVE='driveledger_active_vehicle_v2';
+const RESET_MARKER='driveledger_data_reset_20261125_v1';
+if(!localStorage.getItem(RESET_MARKER)){
+  [KEY,BANK,WALLET,VEHICLE,FLEET,ACTIVE].forEach(k=>localStorage.removeItem(k));
+  localStorage.setItem(RESET_MARKER,'done');
+}
+
 let vehicles=JSON.parse(localStorage.getItem(FLEET)||'[]');
 if(!vehicles.length){let old=JSON.parse(localStorage.getItem(VEHICLE)||'{}');if(old.make||old.model){vehicles=[{...old,id:'vehicle-'+Date.now(),createdAt:new Date().toISOString()}];localStorage.setItem(FLEET,JSON.stringify(vehicles));localStorage.setItem(ACTIVE,vehicles[0].id)}}
 let activeVehicleId=localStorage.getItem(ACTIVE)|| (vehicles[0]?.id||'');
@@ -137,13 +150,16 @@ function saveVehicle(){let v={make:document.getElementById('vehicleMake').value.
 function addFuel(){let l=num('litres'),p=num('price'),odo=document.getElementById('odometer').value.trim(),fill=document.getElementById('fillType').value,v=JSON.parse(localStorage.getItem(VEHICLE)||'{}');if(!activeVehicleId){alert('Please save or select a vehicle first.');return}if(l<=0||p<=0){alert('Enter litres and a price per litre.');return}if(odo===''||Number(odo)<0){alert('Enter the current odometer reading.');return}if(v.tank>0&&l>v.tank){alert('Litres added cannot exceed the saved tank capacity. Check your vehicle tank size.');return}let prev=entries.find(e=>e.type==='Fuel'&&e.vehicleId===activeVehicleId&&Number.isFinite(Number(e.odometer)));if(prev&&Number(odo)<Number(prev.odometer)){alert('The odometer reading cannot be lower than your previous fuel record.');return}entries.unshift({type:'Fuel',vehicleId:activeVehicleId,note:(fill==='full'?'Full tank':'Partial fill')+' · '+l+' L',amount:l*p,litres:l,odometer:Number(odo),fillType:fill,date:new Date().toISOString()});document.getElementById('litres').value='';document.getElementById('odometer').value='';persist()}
 function economyRecords(){let fuels=entries.filter(e=>e.type==='Fuel'&&e.vehicleId===activeVehicleId&&e.fillType&&Number.isFinite(Number(e.odometer))).slice().reverse(),out=[],lastFull=null,litresSince=0;for(let e of fuels){litresSince+=Number(e.litres)||0;if(e.fillType==='full'){if(lastFull){let km=Number(e.odometer)-Number(lastFull.odometer);if(km>0)out.push({km,litres:litresSince,eff:km/litresSince,date:e.date})}lastFull=e;litresSince=0}}return out}
 
+function deleteEntry(index){if(!Number.isInteger(index)||index<0||index>=entries.length)return;if(!confirm('Delete this entry permanently?'))return;entries.splice(index,1);persist()}
+function clearVehicleHistory(){if(!activeVehicleId){alert('Select a vehicle first.');return}if(!confirm('Clear all fuel and maintenance records for the selected vehicle?'))return;entries=entries.filter(e=>!(e.vehicleId===activeVehicleId&&(e.type==='Fuel'||e.type==='Maintenance')));persist()}
+function resetAllData(){if(!confirm('Are you sure you want to erase ALL DriveLedger data on this browser?'))return;if(!confirm('Final confirmation: this cannot be undone. Reset everything now?'))return;[KEY,BANK,WALLET,VEHICLE,FLEET,ACTIVE].forEach(k=>localStorage.removeItem(k));location.reload()}
 function saveBanks(){localStorage.setItem(BANK,JSON.stringify({fnb:num('fnb'),capitec:num('capitec')}));render()}
 function adjustWallet(){let n=num('walletAdjust'),old=Number(localStorage.getItem(WALLET)||0);if(!n){alert('Enter an adjustment amount.');return}let next=old+n;if(next<0){alert('Wallet balance cannot go below zero.');return}localStorage.setItem(WALLET,String(next));document.getElementById('walletAdjust').value='';render()}
-function row(e){let sign=e.type==='Income'?'+':'−',cls=e.type==='Income'?'positive':'negative';return `<div class="entry row"><div><strong>${escapeHtml(e.note)}</strong><div class="small">${e.type} · ${new Date(e.date).toLocaleDateString()}</div></div><div class="amount ${cls}">${sign}${fmt(e.amount)}</div></div>`}
+function row(e,index){let sign=e.type==='Income'?'+':'−',cls=e.type==='Income'?'positive':'negative';return `<div class="entry row"><div style="min-width:0"><strong>${escapeHtml(e.note)}</strong><div class="small">${e.type} · ${new Date(e.date).toLocaleDateString()}</div></div><div style="display:flex;align-items:center;gap:8px"><div class="amount ${cls}">${sign}${fmt(e.amount)}</div><button class="delete-entry" onclick="deleteEntry(${index})">Delete</button></div></div>`}
 function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
 function render(){let inc=entries.filter(e=>e.type==='Income').reduce((a,e)=>a+e.amount,0),exp=entries.filter(e=>e.type!=='Income').reduce((a,e)=>a+e.amount,0),fuel=entries.filter(e=>e.type==='Fuel'),lit=fuel.reduce((a,e)=>a+(e.litres||0),0),fc=fuel.reduce((a,e)=>a+e.amount,0),economy=economyRecords(),km=economy.reduce((a,e)=>a+e.km,0),used=economy.reduce((a,e)=>a+e.litres,0);
 document.getElementById('balance').textContent=fmt(inc-exp);document.getElementById('incomeTotal').textContent=fmt(inc);document.getElementById('expenseTotal').textContent=fmt(exp);document.getElementById('fuelTotal').textContent=fmt(fc);document.getElementById('litreTotal').textContent=lit.toFixed(1)+' L';document.getElementById('fuelLitres').textContent=lit.toFixed(1)+' L';document.getElementById('fuelKm').textContent=km.toFixed(0)+' km';document.getElementById('consumption').textContent=used>0?(km/used).toFixed(1)+' km/l':'Not available yet';
-let html=entries.length?entries.slice(0,8).map(row).join(''):'<div class="small">No entries yet. Add your first income, expense or fuel fill-up.</div>';document.getElementById('recent').innerHTML=html;document.getElementById('transactions').innerHTML=entries.length?entries.map(row).join(''):'<div class="small">No transactions yet.</div>';
+let html=entries.length?entries.slice(0,8).map((e,i)=>row(e,i)).join(''):'<div class="small">No entries yet. Add your first income, expense or fuel fill-up.</div>';document.getElementById('recent').innerHTML=html;document.getElementById('transactions').innerHTML=entries.length?entries.map((e,i)=>row(e,i)).join(''):'<div class="small">No transactions yet.</div>';
 let b=JSON.parse(localStorage.getItem(BANK)||'{}');document.getElementById('fnb').value=b.fnb??'';document.getElementById('capitec').value=b.capitec??'';document.getElementById('bankTotal').textContent=fmt((b.fnb||0)+(b.capitec||0));document.getElementById('walletBalance').textContent=fmt(localStorage.getItem(WALLET)||0);
 let active=vehicles.find(x=>x.id===activeVehicleId)||vehicles[0]||{};if(active.id!==activeVehicleId){activeVehicleId=active.id||'';localStorage.setItem(ACTIVE,activeVehicleId)}
 document.getElementById('vehicleCount').textContent=vehicles.length+' vehicle'+(vehicles.length===1?'':'s');
